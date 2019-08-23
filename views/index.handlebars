@@ -1,0 +1,25 @@
+<div>
+    <h1>Read from pc magazine</h1>
+    <div class="row">
+        <h5 class="card">
+            click 'scrape' to get the latest articles
+        </h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s8">
+        {{#each articcles}}
+        <div class="card w-100">
+            <div class="card-body">
+                <h5 class="card-title">{{this.title}}</h5>
+                <p>{{this.link}}</p>
+                <form action="/save" method="POST">
+                    <input id="article-title" type="hidden" name="title" value="{{this.title}}">
+                    <input id="article-link" type="hidden" name="link" value="{{this.link}}">
+                </form>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
