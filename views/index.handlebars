@@ -9,14 +9,15 @@
 
 <div class="row">
     <div class="col s8">
-        {{#each articcles}}
+        {{#each articles}}
         <div class="card w-100">
             <div class="card-body">
                 <h5 class="card-title">{{this.title}}</h5>
-                <p>{{this.link}}</p>
+                <p class="card-subtitle">{{this.link}}</p>
                 <form action="/save" method="POST">
                     <input id="article-title" type="hidden" name="title" value="{{this.title}}">
                     <input id="article-link" type="hidden" name="link" value="{{this.link}}">
+                    <a type="submit" class="btn btn-default">Save article</a>
                 </form>
             </div>
         </div>
