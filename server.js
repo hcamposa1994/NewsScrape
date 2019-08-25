@@ -28,7 +28,9 @@ const exphs = require("express-handlebars");
 app.engine("handlebars", exphs({ defaultLayout: "main"}));
 app.set("view engine", "handlebars");
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/scrapedNews", { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scrapedNews";
+
+mongoose.connect(MONGODB_URI);
 
 require("./controller/scrape_controller")(app)
 
