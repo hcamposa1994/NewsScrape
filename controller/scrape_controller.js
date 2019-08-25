@@ -1,9 +1,15 @@
 const db = require('../models');
+const axios = require("axios");
+const cheerio = require("cheerio");
+const mongoose = require("mongoose");
 
 module.exports = (app) => {
   // Routes
   app.get('/', (req, res) => {
-    res.render('index');
+    db.Article.find({}).limit(10)
+    .then( dbArticle => {
+        res.render('index', {dbArticle})
+    })
   });
   // A GET route for scraping the echoJS website
   app.get('/scrape', function(req, res) {
@@ -38,16 +44,13 @@ module.exports = (app) => {
         db.Article.create(result)
             .then(function(dbArticle) {
             // View the added result in the console
-              console.log(dbArticle);
+              res.render('index', {dbArticle})
             })
             .catch(function(err) {
             // If an error occurred, log it
               console.log(err);
             });
       });
-
-      // Send a message to the client
-      res.send('Scrape Complete');
     });
   });
 
