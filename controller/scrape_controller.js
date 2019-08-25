@@ -44,7 +44,7 @@ module.exports = (app) => {
         db.Article.create(result)
             .then(function(dbArticle) {
             // View the added result in the console
-              res.render('index', {dbArticle})
+              res.redirect('/')
             })
             .catch(function(err) {
             // If an error occurred, log it
