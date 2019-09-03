@@ -13,12 +13,10 @@
         <div class="card w-100">
             <div class="card-body">
                 <h5 class="card-title">{{this.title}}</h5>
-                <a class="card-subtitle" href={{this.link}}>Article link</a>
+                <a class="card-subtitle" href={{this.link}} target="_blank">Article link</a>
                 <p class="card-text">{{this.summary}}</p>
-                <form action="/save" method="POST">
-                    <input id="article-title" type="hidden" name="title" value="{{this.title}}">
-                    <input id="article-link" type="hidden" name="link" value="{{this.link}}">
-                    <input id="article-summary" type="hidden" name="summary" value="{{this.summary}}">
+                <form action="/save/{{this._id}}" method="POST">
+                    <input id="article-data" type="hidden" name="article-data" value="{{this._id}}">
                     <button type="submit" class="btn btn-default">Save article</button>
                 </form>
             </div>

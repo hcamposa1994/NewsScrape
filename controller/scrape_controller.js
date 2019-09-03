@@ -1,19 +1,38 @@
 const db = require('../models');
-const axios = require("axios");
-const cheerio = require("cheerio");
-const mongoose = require("mongoose");
+const axios = require('axios');
+const cheerio = require('cheerio');
+const mongoose = require('mongoose');
 
 module.exports = (app) => {
   // Routes
+
   app.get('/', (req, res) => {
-    db.Article.find({}).limit(10)
-    .then( dbArticle => {
-        res.render('index', {dbArticle})
-    })
+    mongoose.connection.db.collection('articles').countDocuments( (err, count) => {
+      if (count > 0) {
+        db.Article.find({}).limit(10)
+            .then( (dbArticle) => {
+              res.render('index', {dbArticle});
+            });
+      } else {
+        res.render('index');
+      }
+    });
   });
   // A GET route for scraping the echoJS website
   app.get('/scrape', function(req, res) {
     // First, we grab the body of the html with axios
+    mongoose.connection.db.collection('articles').countDocuments( (err, count) => {
+      console.log(count);
+      if (count > 0) {
+        mongoose.connection.db.collection('articles').deleteMany({}, (err) => {});
+      }
+      res.redirect('/articles');
+    });
+  });
+
+  // Route for getting all Articles from the db
+  app.get('/articles', function(req, res) {
+    // TODO: Finish the route so it grabs all of the articles
     axios.get('https://www.pcworld.com/news/').then(function(response) {
       // Then, we load that into cheerio and save it to $ for a shorthand selector
       const $ = cheerio.load(response.data);
@@ -43,26 +62,17 @@ module.exports = (app) => {
         // Create a new Article using the `result` object built from scraping
         db.Article.create(result)
             .then(function(dbArticle) {
-            // View the added result in the console
-              res.redirect('/')
+              // View the added result in the console
+              console.log('created');
             })
             .catch(function(err) {
-            // If an error occurred, log it
+              // If an error occurred, log it
               console.log(err);
             });
       });
-    });
-  });
-
-  // Route for getting all Articles from the db
-  app.get('/articles', function(req, res) {
-    // TODO: Finish the route so it grabs all of the articles
-    db.Article.find({})
-        .then( (dbArticle) => {
-          res.json(dbArticle);
-        })
-        .catch( (err) => {
-          res.json(err);
+    })
+        .finally( (response) => {
+          res.redirect('/');
         });
   });
 
