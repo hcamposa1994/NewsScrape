@@ -10,8 +10,8 @@
                 <h5 class="card-title">{{this.title}}</h5>
                 <a class="card-subtitle" href={{this.link}} target="_blank">Article link</a>
                 <p class="card-text">{{this.summary}}</p>
-                <form action="/delete/{{this._id}}" method="POST">
-                    <button type="submit" class="btn btn-default">delete article</button>
+                <form method="POST" action="/delete/{{this._id}}" >
+                    <button type="submit" class="btn btn-default" value="{{this._id}}">delete article</button>
                 </form>
             </div>
         </div>

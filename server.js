@@ -103,14 +103,14 @@ app.post("/save/:id", (req, res) => {
   })
 })
 
-app.post("delete/:id", (req, res) => {
+app.post("/delete/:id", (req, res) => {
   db.Article.findOneAndUpdate({
-    _id: req.params._id
+    _id: req.params.id
   }, {
     saved: false
   })
   .then( dbArticle => {
-    res.json(dbArticle)
+    res.redirect("/savedarticles")
   })
   .catch( err => {
     if (err) res.json(err);
