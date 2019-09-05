@@ -126,6 +126,30 @@ app.get("/savedarticles", (req, res) => {
       if (err) res.json(err)
     })
 })
+
+app.post("/notes/:id", (req, res) => {
+  db.Note.create(req.body)
+    .then( dbNote => {
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true })
+    })
+    .then( dbArticle => {
+      res.json(dbArticle)
+    })
+    .catch( err => {
+      if (err) res.json(err)
+    })
+})
+
+app.get("/savedarticles/:id", (req, res) => {
+  db.Article.findOne({ _id: req.params.id })
+    .populate("note")
+    .then( dbArticle => {
+      res.json(dbArticle)
+    })
+    .catch( err => {
+      if (err) res.json(err);
+    })
+})
 // Start the server
 app.listen(port, function() {
   console.log('App running on port ' + port + '!');
